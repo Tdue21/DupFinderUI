@@ -1,0 +1,9 @@
+﻿<Application x:Class="DupFinderUI.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:DupFinderUI"
+             StartupUri="Views/MainWindow.xaml">
+    <Application.Resources>
+        <local:DependencyLocator x:Key="DependencyLocator" />
+    </Application.Resources>
+</Application>
