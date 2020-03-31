@@ -22,13 +22,24 @@
 // * SOFTWARE.
 // ****************************************************************************
 
+using System;
 using DupFinderUI.Models;
 
 namespace DupFinderUI.Interfaces
 {
-    public interface ISettingsModel
+    /// <summary>
+    /// </summary>
+    public interface IDupFinderService
     {
-        SettingsData LoadSettings();
-        void SaveSettings(SettingsData data);
+        /// <summary>
+        ///     Occurs when [data received].
+        /// </summary>
+        event EventHandler<string> DataReceived;
+
+        /// <summary>
+        ///     Runs the specified data.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        void Run(SettingsData data);
     }
 }

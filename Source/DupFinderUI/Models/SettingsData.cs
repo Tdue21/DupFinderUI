@@ -26,9 +26,48 @@ namespace DupFinderUI.Models
 {
     public class SettingsData
     {
+        public SettingsData()
+        {
+        }
+
+        public SettingsData(SettingsData original)
+        {
+            DupFinderPath = (string) original.DupFinderPath.Clone();
+            OutputFile    = (string) original.OutputFile.Clone();
+            SourceFolder  = (string) original.SourceFolder.Clone();
+            TransformFile = (string) original.TransformFile.Clone();
+        }
+
+        /// <summary>
+        ///     Gets or sets the dup finder path.
+        /// </summary>
+        /// <value>
+        ///     The dup finder path.
+        /// </value>
         public string DupFinderPath { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the source folder.
+        /// </summary>
+        /// <value>
+        ///     The source folder.
+        /// </value>
         public string SourceFolder { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the output file.
+        /// </summary>
+        /// <value>
+        ///     The output file.
+        /// </value>
         public string OutputFile { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the transform file.
+        /// </summary>
+        /// <value>
+        ///     The transform file.
+        /// </value>
         public string TransformFile { get; set; }
     }
 }

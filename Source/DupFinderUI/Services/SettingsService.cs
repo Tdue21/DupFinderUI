@@ -25,22 +25,38 @@
 using System;
 using System.Text;
 using DupFinderUI.Interfaces;
+using DupFinderUI.Models;
 using Newtonsoft.Json;
 
-namespace DupFinderUI.Models
+namespace DupFinderUI.Services
 {
-    public class SettingsModel : ISettingsModel
+    /// <summary>
+    /// </summary>
+    /// <seealso cref="DupFinderUI.Interfaces.ISettingsService" />
+    public class SettingsService : ISettingsService
     {
         private readonly IFileSystemService _fileSystemService;
         private string _settingsFile;
 
-        public SettingsModel(IFileSystemService fileSystemService)
-        {
-            _fileSystemService = fileSystemService ?? throw new ArgumentNullException(nameof(fileSystemService));
-        }
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="SettingsService" /> class.
+        /// </summary>
+        /// <param name="fileSystemService">The file system service.</param>
+        /// <exception cref="ArgumentNullException">fileSystemService</exception>
+        public SettingsService(IFileSystemService fileSystemService) => _fileSystemService = fileSystemService ?? throw new ArgumentNullException(nameof(fileSystemService));
 
+        /// <summary>
+        ///     Gets the settings file.
+        /// </summary>
+        /// <value>
+        ///     The settings file.
+        /// </value>
         private string SettingsFile => _settingsFile ?? (_settingsFile = _fileSystemService.GetFilePath("Settings.json"));
 
+        /// <summary>
+        ///     Loads the settings.
+        /// </summary>
+        /// <returns></returns>
         public SettingsData LoadSettings()
         {
             if (!_fileSystemService.FileExists(SettingsFile))
@@ -53,6 +69,10 @@ namespace DupFinderUI.Models
             return item ?? new SettingsData();
         }
 
+        /// <summary>
+        ///     Saves the settings.
+        /// </summary>
+        /// <param name="data">The data.</param>
         public void SaveSettings(SettingsData data)
         {
             var content = JsonConvert.SerializeObject(data);

@@ -24,8 +24,14 @@
 
 namespace DupFinderUI.Interfaces
 {
+    /// <summary>
+    /// </summary>
     public interface IProcessService
     {
+        /// <summary>
+        ///     Starts the process.
+        /// </summary>
+        /// <param name="process">The process.</param>
         void StartProcess(string process);
     }
 }

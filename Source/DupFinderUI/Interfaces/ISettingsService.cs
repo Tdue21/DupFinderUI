@@ -22,21 +22,24 @@
 // * SOFTWARE.
 // ****************************************************************************
 
-using System;
+using DupFinderUI.Models;
 
 namespace DupFinderUI.Interfaces
 {
-    public interface IDupFinderModel
+    /// <summary>
+    /// </summary>
+    public interface ISettingsService
     {
-        string DupFinderPath { get; set; }
-        
-        string SourceFolder { get; set; }
-        
-        string OutputFile { get; set; }
-        
-        string TransformFile { get; set; }
+        /// <summary>
+        ///     Loads the settings.
+        /// </summary>
+        /// <returns></returns>
+        SettingsData LoadSettings();
 
-        event EventHandler<string> DataReceived;
-        void Run();
+        /// <summary>
+        ///     Saves the settings.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        void SaveSettings(SettingsData data);
     }
 }

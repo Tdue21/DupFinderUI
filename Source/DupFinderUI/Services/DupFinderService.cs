@@ -27,39 +27,62 @@ using System.Diagnostics;
 using System.IO;
 using System.Xml.Xsl;
 using DupFinderUI.Interfaces;
+using DupFinderUI.Models;
 
-namespace DupFinderUI.Models
+namespace DupFinderUI.Services
 {
-    public class DupFinderModel : IDupFinderModel
+    /// <summary>
+    /// </summary>
+    /// <seealso cref="DupFinderUI.Interfaces.IDupFinderService" />
+    public class DupFinderService : IDupFinderService
     {
         private readonly IFileSystemService _fileSystemService;
         private readonly IProcessService _processService;
+        private SettingsData _settingsData;
 
-        public DupFinderModel(IFileSystemService fileSystemService, IProcessService processService)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DupFinderService" /> class.
+        /// </summary>
+        /// <param name="fileSystemService">The file system service.</param>
+        /// <param name="processService">The process service.</param>
+        /// <exception cref="ArgumentNullException">
+        ///     fileSystemService
+        ///     or
+        ///     processService
+        /// </exception>
+        public DupFinderService(IFileSystemService fileSystemService, IProcessService processService)
         {
             _fileSystemService = fileSystemService ?? throw new ArgumentNullException(nameof(fileSystemService));
             _processService    = processService ?? throw new ArgumentNullException(nameof(processService));
         }
 
+        /// <summary>
+        ///     Occurs when [data received].
+        /// </summary>
         public event EventHandler<string> DataReceived;
 
-        public string DupFinderPath { get; set; }
-        public string SourceFolder { get; set; }
-        public string OutputFile { get; set; }
-        public string TransformFile { get; set; }
-
-        public void Run()
+        /// <summary>
+        ///     Runs the specified data.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        public void Run(SettingsData data)
         {
+            _settingsData = new SettingsData(data);
             RunDupFinder();
             var htmlOutput = TransformOutput();
             _processService.StartProcess(htmlOutput);
         }
 
+        /// <summary>
+        ///     Runs the dup finder.
+        /// </summary>
+        /// <exception cref="FileNotFoundException">The program dupfinder.exe was not found.</exception>
+        /// <exception cref="DirectoryNotFoundException">The DupFinder path '{_settingsData.DupFinderPath}' does not exist.</exception>
         private void RunDupFinder()
         {
-            if (_fileSystemService.DirectoryExists(DupFinderPath))
+            if (_fileSystemService.DirectoryExists(_settingsData.DupFinderPath))
             {
-                var dupFinder = _fileSystemService.CombinePaths(DupFinderPath, "dupfinder.exe");
+                var dupFinder = _fileSystemService.CombinePaths(_settingsData.DupFinderPath, "dupfinder.exe");
                 if (_fileSystemService.FileExists(dupFinder))
                 {
                     var proc = new Process
@@ -72,7 +95,7 @@ namespace DupFinderUI.Models
                                                    UseShellExecute        = false,
                                                    RedirectStandardInput  = true,
                                                    FileName               = dupFinder,
-                                                   Arguments              = $"--show-text -o={OutputFile} {SourceFolder}"
+                                                   Arguments              = $"--show-text -o={_settingsData.OutputFile} {_settingsData.SourceFolder}"
                                                }
                                };
                     proc.ErrorDataReceived  += (sender, args) => OnDataReceived($"[ERROR]: {args?.Data}");
@@ -91,20 +114,24 @@ namespace DupFinderUI.Models
             }
             else
             {
-                throw new DirectoryNotFoundException($"The DupFinder path '{DupFinderPath}' does not exist.");
+                throw new DirectoryNotFoundException($"The DupFinder path '{_settingsData.DupFinderPath}' does not exist.");
             }
         }
 
+        /// <summary>
+        ///     Transforms the output.
+        /// </summary>
+        /// <returns></returns>
         private string TransformOutput()
         {
-            using (var xsltReader = _fileSystemService.CreateXmlReader(TransformFile))
+            using (var xsltReader = _fileSystemService.CreateXmlReader(_settingsData.TransformFile))
             {
                 var transformer = new XslCompiledTransform();
                 transformer.Load(xsltReader);
 
-                using (var documentReader = _fileSystemService.CreateXmlReader(OutputFile))
+                using (var documentReader = _fileSystemService.CreateXmlReader(_settingsData.OutputFile))
                 {
-                    var htmlOutput = _fileSystemService.ChangeExtension(OutputFile, ".html");
+                    var htmlOutput = _fileSystemService.ChangeExtension(_settingsData.OutputFile, ".html");
                     using (var writer = _fileSystemService.CreateXmlWriter(htmlOutput))
                     {
                         transformer.Transform(documentReader, writer);
@@ -116,6 +143,10 @@ namespace DupFinderUI.Models
             }
         }
 
+        /// <summary>
+        ///     Called when [data received].
+        /// </summary>
+        /// <param name="e">The e.</param>
         protected virtual void OnDataReceived(string e) => DataReceived?.BeginInvoke(this, e, null, null);
     }
 }

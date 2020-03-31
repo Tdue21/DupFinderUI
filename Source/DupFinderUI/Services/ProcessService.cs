@@ -27,8 +27,15 @@ using DupFinderUI.Interfaces;
 
 namespace DupFinderUI.Services
 {
+    /// <summary>
+    /// </summary>
+    /// <seealso cref="DupFinderUI.Interfaces.IProcessService" />
     public class ProcessService : IProcessService
     {
+        /// <summary>
+        ///     Starts the process.
+        /// </summary>
+        /// <param name="process">The process.</param>
         public void StartProcess(string process) => Process.Start(process);
     }
 }

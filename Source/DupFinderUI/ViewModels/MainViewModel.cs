@@ -30,61 +30,142 @@ using DupFinderUI.Models;
 
 namespace DupFinderUI.ViewModels
 {
+    /// <summary>
+    /// </summary>
+    /// <seealso cref="DevExpress.Mvvm.ViewModelBase" />
     public class MainViewModel : ViewModelBase
     {
-        private readonly IDupFinderModel _dupFinderModel;
-        private readonly ISettingsModel _settingsModel;
+        private readonly IDupFinderService _dupFinderModel;
+        private readonly ISettingsService _settingsModel;
 
-        public MainViewModel(ISettingsModel settingsModel, IDupFinderModel dupFinderModel)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MainViewModel" /> class.
+        /// </summary>
+        /// <param name="settingsModel">The settings model.</param>
+        /// <param name="dupFinderModel">The dup finder model.</param>
+        /// <exception cref="ArgumentNullException">
+        ///     settingsModel
+        ///     or
+        ///     dupFinderModel
+        /// </exception>
+        public MainViewModel(ISettingsService settingsModel, IDupFinderService dupFinderModel)
         {
             _settingsModel               =  settingsModel ?? throw new ArgumentNullException(nameof(settingsModel));
             _dupFinderModel              =  dupFinderModel ?? throw new ArgumentNullException(nameof(dupFinderModel));
             _dupFinderModel.DataReceived += (sender, s) => DupFinderOutput += s + Environment.NewLine;
         }
 
+        /// <summary>
+        ///     Gets or sets the dup finder path.
+        /// </summary>
+        /// <value>
+        ///     The dup finder path.
+        /// </value>
         public string DupFinderPath
         {
             get => GetProperty(() => DupFinderPath);
             set => SetProperty(() => DupFinderPath, value);
         }
 
+        /// <summary>
+        ///     Gets or sets the transform file.
+        /// </summary>
+        /// <value>
+        ///     The transform file.
+        /// </value>
         public string TransformFile
         {
             get => GetProperty(() => TransformFile);
             set => SetProperty(() => TransformFile, value);
         }
 
+        /// <summary>
+        ///     Gets or sets the source folder.
+        /// </summary>
+        /// <value>
+        ///     The source folder.
+        /// </value>
         public string SourceFolder
         {
             get => GetProperty(() => SourceFolder);
             set => SetProperty(() => SourceFolder, value);
         }
 
+        /// <summary>
+        ///     Gets or sets the output file.
+        /// </summary>
+        /// <value>
+        ///     The output file.
+        /// </value>
         public string OutputFile
         {
             get => GetProperty(() => OutputFile);
             set => SetProperty(() => OutputFile, value);
         }
 
+        /// <summary>
+        ///     Gets or sets the dup finder output.
+        /// </summary>
+        /// <value>
+        ///     The dup finder output.
+        /// </value>
         public string DupFinderOutput
         {
             get => GetProperty(() => DupFinderOutput);
             set => SetProperty(() => DupFinderOutput, value);
         }
 
-        public IFolderBrowserDialogService FolderBrowserDialogService => GetService<IFolderBrowserDialogService>();
+        /// <summary>
+        ///     Gets the folder browser dialog service.
+        /// </summary>
+        /// <value>
+        ///     The folder browser dialog service.
+        /// </value>
+        private IFolderBrowserDialogService FolderBrowserDialogService => GetService<IFolderBrowserDialogService>();
 
-        public IOpenFileDialogService OpenFileDialog => GetService<IOpenFileDialogService>();
+        /// <summary>
+        ///     Gets the open file dialog.
+        /// </summary>
+        /// <value>
+        ///     The open file dialog.
+        /// </value>
+        private IOpenFileDialogService OpenFileDialog => GetService<IOpenFileDialogService>();
 
+        /// <summary>
+        ///     Gets the initialization.
+        /// </summary>
+        /// <value>
+        ///     The initialization.
+        /// </value>
         public ICommand Initialization => new DelegateCommand(ExecuteInitialization);
 
+        /// <summary>
+        ///     Gets the open folder.
+        /// </summary>
+        /// <value>
+        ///     The open folder.
+        /// </value>
         public ICommand OpenFolder => new DelegateCommand<int>(ExecuteOpenFolderDialog);
 
+        /// <summary>
+        ///     Gets the open file.
+        /// </summary>
+        /// <value>
+        ///     The open file.
+        /// </value>
         public ICommand OpenFile => new DelegateCommand<int>(ExecuteOpenFileDialog);
 
+        /// <summary>
+        ///     Gets the transform.
+        /// </summary>
+        /// <value>
+        ///     The transform.
+        /// </value>
         public ICommand Transform => new DelegateCommand(ExecuteTransform);
 
-
+        /// <summary>
+        ///     Executes the initialization.
+        /// </summary>
         private void ExecuteInitialization()
         {
             var data = _settingsModel.LoadSettings();
@@ -95,6 +176,10 @@ namespace DupFinderUI.ViewModels
             OutputFile    = data.OutputFile;
         }
 
+        /// <summary>
+        ///     Executes the open file dialog.
+        /// </summary>
+        /// <param name="input">The input.</param>
         private void ExecuteOpenFileDialog(int input)
         {
             if (OpenFileDialog != null && OpenFileDialog.ShowDialog())
@@ -112,6 +197,10 @@ namespace DupFinderUI.ViewModels
             }
         }
 
+        /// <summary>
+        ///     Executes the open folder dialog.
+        /// </summary>
+        /// <param name="input">The input.</param>
         private void ExecuteOpenFolderDialog(int input)
         {
             if (FolderBrowserDialogService != null && FolderBrowserDialogService.ShowDialog())
@@ -129,22 +218,20 @@ namespace DupFinderUI.ViewModels
             }
         }
 
+        /// <summary>
+        ///     Executes the transform.
+        /// </summary>
         private void ExecuteTransform()
         {
             var data = new SettingsData
                        {
-                           DupFinderPath = DupFinderPath,
+                           DupFinderPath = DupFinderPath.Trim(),
                            TransformFile = TransformFile,
-                           SourceFolder  = SourceFolder,
+                           SourceFolder  = SourceFolder.Trim(),
                            OutputFile    = OutputFile
                        };
             _settingsModel.SaveSettings(data);
-
-            _dupFinderModel.DupFinderPath = DupFinderPath.Trim();
-            _dupFinderModel.SourceFolder  = SourceFolder.Trim();
-            _dupFinderModel.OutputFile    = OutputFile;
-            _dupFinderModel.TransformFile = TransformFile;
-            _dupFinderModel.Run();
+            _dupFinderModel.Run(data);
         }
     }
 }

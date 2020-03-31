@@ -23,25 +23,35 @@
 // ****************************************************************************
 
 using DupFinderUI.Interfaces;
-using DupFinderUI.Models;
 using DupFinderUI.Services;
 using DupFinderUI.ViewModels;
 using Unity;
 
 namespace DupFinderUI
 {
+    /// <summary>
+    /// </summary>
     public class DependencyLocator
     {
         private readonly IUnityContainer _container;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DependencyLocator" /> class.
+        /// </summary>
         public DependencyLocator() =>
             _container = new UnityContainer()
                          .RegisterType<IFileSystemService, FileSystemService>()
                          .RegisterType<IProcessService, ProcessService>()
-                         .RegisterType<ISettingsModel, SettingsModel>()
-                         .RegisterType<IDupFinderModel, DupFinderModel>()
+                         .RegisterType<ISettingsService, SettingsService>()
+                         .RegisterType<IDupFinderService, DupFinderService>()
                          .RegisterType<MainViewModel>();
 
+        /// <summary>
+        ///     Gets the main view model.
+        /// </summary>
+        /// <value>
+        ///     The main view model.
+        /// </value>
         public MainViewModel MainViewModel => _container.Resolve<MainViewModel>();
     }
 }
