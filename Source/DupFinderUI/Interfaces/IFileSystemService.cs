@@ -1,7 +1,7 @@
 ﻿// ****************************************************************************
 // * MIT License
 // *
-// * Copyright (c) 2020 Thomas Due
+// * Copyright (c)  Thomas Due
 // *
 // * Permission is hereby granted, free of charge, to any person obtaining a copy
 // * of this software and associated documentation files (the "Software"), to deal
@@ -22,13 +22,25 @@
 // * SOFTWARE.
 // ****************************************************************************
 
-using System.Diagnostics;
-using DupFinderUI.Interfaces;
+using System.IO;
+using System.Text;
+using System.Xml;
 
-namespace DupFinderUI.Services
+namespace DupFinderUI.Interfaces
 {
-    public class ProcessService : IProcessService
+    public interface IFileSystemService
     {
-        public void StartProcess(string process) => Process.Start(process);
+        bool FileExists(string fileName);
+        string ReadAllText(string fileName, Encoding encoding);
+        string GetApplicationPath();
+        string GetFilePath(string fileName);
+        void WriteAllText(string fileName, string data, Encoding encoding);
+        bool DirectoryExists(string directoryPath);
+        string CombinePaths(params string[] paths);
+        Stream ReadFile(string path);
+        string ChangeExtension(string path, string extension);
+        Stream WriteFile(string path);
+        XmlReader CreateXmlReader(string path);
+        XmlWriter CreateXmlWriter(string path);
     }
 }

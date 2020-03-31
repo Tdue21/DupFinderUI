@@ -22,13 +22,13 @@
 // * SOFTWARE.
 // ****************************************************************************
 
-using System.Diagnostics;
-using DupFinderUI.Interfaces;
+using DupFinderUI.Models;
 
-namespace DupFinderUI.Services
+namespace DupFinderUI.Interfaces
 {
-    public class ProcessService : IProcessService
+    public interface ISettingsModel
     {
-        public void StartProcess(string process) => Process.Start(process);
+        SettingsData LoadSettings();
+        void SaveSettings(SettingsData data);
     }
 }

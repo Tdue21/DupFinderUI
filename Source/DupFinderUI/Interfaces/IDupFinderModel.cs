@@ -22,13 +22,21 @@
 // * SOFTWARE.
 // ****************************************************************************
 
-using System.Diagnostics;
-using DupFinderUI.Interfaces;
+using System;
 
-namespace DupFinderUI.Services
+namespace DupFinderUI.Interfaces
 {
-    public class ProcessService : IProcessService
+    public interface IDupFinderModel
     {
-        public void StartProcess(string process) => Process.Start(process);
+        string DupFinderPath { get; set; }
+        
+        string SourceFolder { get; set; }
+        
+        string OutputFile { get; set; }
+        
+        string TransformFile { get; set; }
+
+        event EventHandler<string> DataReceived;
+        void Run();
     }
 }

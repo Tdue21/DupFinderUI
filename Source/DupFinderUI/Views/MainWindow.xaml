@@ -6,9 +6,9 @@
         xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
         mc:Ignorable="d"
         DataContext="{Binding MainViewModel, Source={StaticResource DependencyLocator}}"
-        Title="Jetbrains DupFinder UI" 
-        Height="600" Width="540" 
-        WindowStyle="SingleBorderWindow" 
+        Title="Jetbrains DupFinder UI"
+        Height="600" Width="540"
+        WindowStyle="SingleBorderWindow"
         ResizeMode="NoResize">
 
     <Grid Margin="10">
@@ -29,30 +29,34 @@
 
         <dxmvvm:Interaction.Behaviors>
             <dxmvvm:FolderBrowserDialogService Description="Select path to Jetbrains DupFinder" />
-            <dxmvvm:OpenFileDialogService Multiselect="False" Title="Select file"  />
+            <dxmvvm:OpenFileDialogService Multiselect="False" Title="Select file" />
             <dxmvvm:EventToCommand EventName="Loaded" Command="{Binding Initialization}" />
         </dxmvvm:Interaction.Behaviors>
 
-        <Label   Grid.Row="0" Grid.Column="0" Margin="0,3" Content="DupFinder Path" />
+        <Label Grid.Row="0" Grid.Column="0" Margin="0,3" Content="DupFinder Path" />
         <TextBox Grid.Row="0" Grid.Column="1" Margin="10,3" Text="{Binding DupFinderPath}" />
-        <Button  Grid.Row="0" Grid.Column="2" Margin="0,3" Padding="6,0" Content="Browse ..." Command="{Binding OpenFolder}" CommandParameter="1"/>
+        <Button Grid.Row="0" Grid.Column="2" Margin="0,3" Padding="6,0" Content="Browse ..."
+                Command="{Binding OpenFolder}" CommandParameter="1" />
 
-        <Label   Grid.Row="1" Grid.Column="0" Margin="0,3" Content="Source Folder" />
+        <Label Grid.Row="1" Grid.Column="0" Margin="0,3" Content="Source Folder" />
         <TextBox Grid.Row="1" Grid.Column="1" Margin="10,3" Text="{Binding SourceFolder}" />
-        <Button  Grid.Row="1" Grid.Column="2" Margin="0,3" Content="Browse ..." Command="{Binding OpenFolder}" CommandParameter="2" />
+        <Button Grid.Row="1" Grid.Column="2" Margin="0,3" Content="Browse ..." Command="{Binding OpenFolder}"
+                CommandParameter="2" />
 
-        <Label   Grid.Row="2" Grid.Column="0" Margin="0,3" Content="Transform file" />
-        <TextBox Grid.Row="2" Grid.Column="1" Margin="10,3" Text="{Binding TransformFile}"/>
-        <Button  Grid.Row="2" Grid.Column="2" Margin="0,3" Content="Browse ..." Command="{Binding OpenFile}" CommandParameter="1" />
+        <Label Grid.Row="2" Grid.Column="0" Margin="0,3" Content="Transform file" />
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="10,3" Text="{Binding TransformFile}" />
+        <Button Grid.Row="2" Grid.Column="2" Margin="0,3" Content="Browse ..." Command="{Binding OpenFile}"
+                CommandParameter="1" />
 
-        <Label   Grid.Row="3" Grid.Column="0" Margin="0,3" Content="Output file" />
-        <TextBox Grid.Row="3" Grid.Column="1" Margin="10,3" Text="{Binding OutputFile}"/>
-        <Button  Grid.Row="3" Grid.Column="2" Margin="0,3" Content="Browse ..." Command="{Binding OpenFile}" CommandParameter="2" />
-                           
-        <Button  Grid.Row="4" Grid.Column="1"  Margin="10,3" Content="Transform" Command="{Binding Transform}" />
+        <Label Grid.Row="3" Grid.Column="0" Margin="0,3" Content="Output file" />
+        <TextBox Grid.Row="3" Grid.Column="1" Margin="10,3" Text="{Binding OutputFile}" />
+        <Button Grid.Row="3" Grid.Column="2" Margin="0,3" Content="Browse ..." Command="{Binding OpenFile}"
+                CommandParameter="2" />
 
-        <TextBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding DupFinderOutput}" 
-                 HorizontalScrollBarVisibility="Auto" 
+        <Button Grid.Row="4" Grid.Column="1" Margin="10,3" Content="Transform" Command="{Binding Transform}" />
+
+        <TextBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding DupFinderOutput}"
+                 HorizontalScrollBarVisibility="Auto"
                  VerticalScrollBarVisibility="Auto" />
     </Grid>
 </Window>
