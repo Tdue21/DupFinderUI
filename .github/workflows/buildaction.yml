@@ -18,4 +18,4 @@ jobs:
     - name: Build
       run: dotnet build --configuration Debug --no-restore  Source/DupFinderUI.sln
     - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test --no-restore --verbosity normal Source/DupFinderUI.sln
