@@ -24,6 +24,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -53,9 +54,19 @@
         <Button Grid.Row="3" Grid.Column="2" Margin="0,3" Content="Browse ..." Command="{Binding OpenFile}"
                 CommandParameter="2" />
 
-        <Button Grid.Row="4" Grid.Column="1" Margin="10,3" Content="Transform" Command="{Binding Transform}" />
+		<GroupBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Header="Options">
+            <StackPanel>
+			<CheckBox ></CheckBox>
+			<CheckBox ></CheckBox>
+			<CheckBox ></CheckBox>
+            </StackPanel>
+		</GroupBox>
 
-        <TextBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding DupFinderOutput}"
+        
+
+        <Button Grid.Row="5" Grid.Column="1" Margin="10,3" Content="Transform" Command="{Binding Transform}" />
+
+        <TextBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding DupFinderOutput}"
                  HorizontalScrollBarVisibility="Auto"
                  VerticalScrollBarVisibility="Auto" />
     </Grid>
