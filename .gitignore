@@ -2,3 +2,6 @@ packages/
 bin/
 obj/
 .vs/
+_ReSharper.Caches/
+/Source/DupFinderUI/Backup
+/Source/DupFinderUI/Backup1

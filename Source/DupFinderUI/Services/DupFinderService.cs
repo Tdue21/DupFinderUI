@@ -95,7 +95,7 @@ namespace DupFinderUI.Services
                                                    UseShellExecute        = false,
                                                    RedirectStandardInput  = true,
                                                    FileName               = dupFinder,
-                                                   Arguments              = $"--show-text -o={_settingsData.OutputFile} {_settingsData.SourceFolder}"
+                                                   Arguments              = $"--show-text --config-create=config.xml --output={_settingsData.OutputFile} {_settingsData.SourceFolder}"
                                                }
                                };
                     proc.ErrorDataReceived  += (sender, args) => OnDataReceived($"[ERROR]: {args?.Data}");
